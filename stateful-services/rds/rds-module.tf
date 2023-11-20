@@ -78,7 +78,8 @@ module "rds" {
   max_allocated_storage = var.rds.max_allocated_storage
   storage_type          = var.rds.storage_type
   storage_encrypted     = true
-  iops                  = lookup(var.rds, "iops", 3000)
+  iops                  = lookup(var.rds, "iops", null)
+  kms_key_id            = lookup(var.rds, "kms_key_id", null)
 
   # Authentication
   iam_database_authentication_enabled = true
