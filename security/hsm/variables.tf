@@ -21,10 +21,11 @@ variable "department" {
 }
 
 variable "hsm" {
-  description = "Config to create rds"
+  description = "Config to create hsm"
   type = object({
     name                 = optional(string)
     hsm_type             = optional(string)
+    hsm_count            = optional(number)
     subnet_ids           = optional(list(string))
     create_custom_subnet = optional(bool)
     custom_subnet_cidrs  = optional(list(string))
