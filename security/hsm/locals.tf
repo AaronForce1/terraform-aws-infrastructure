@@ -1,4 +1,5 @@
 locals {
+  name_prefix = "${var.app_name}-${var.app_namespace}-${var.tfenv}"
   base_tags = {
     Environment = var.tfenv
     Terraform   = "true"

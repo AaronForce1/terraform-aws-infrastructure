@@ -1,4 +1,8 @@
 ## GLOBAL VAR CONFIGURATION
+variable "aws_region" {
+  type = string
+  description = "AWS Region"
+}
 variable "app_name" {
   type        = string
   description = "(Infrastructure) Application Name"
@@ -26,6 +30,7 @@ variable "hsm" {
     name                 = optional(string)
     hsm_type             = optional(string)
     hsm_count            = optional(number)
+    hsm_init             = optional(bool)
     subnet_ids           = optional(list(string))
     create_custom_subnet = optional(bool)
     custom_subnet_cidrs  = optional(list(string))
