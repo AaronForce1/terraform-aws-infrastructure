@@ -1,8 +1,8 @@
 module "ec2_instance" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
+  source = "terraform-aws-modules/ec2-instance/aws"
 
   for_each = {
-    for idx in range(0, length(var.hsm.hsm_count) > 0 && var.hsm.hsm_init ? 1 : 0): "${var.app_name}-${var.app_namespace}-${var.tfenv}-init-ec2-${idx}" => idx
+    for idx in range(0, var.hsm.hsm_count > 0 && var.hsm.hsm_init ? 1 : 0) : "${var.app_name}-${var.app_namespace}-${var.tfenv}-init-ec2-${idx}" => idx
   }
 
   name = "${var.app_name}-${var.app_namespace}-${var.tfenv}-init-instance"
@@ -27,13 +27,13 @@ module "security_group_instance" {
   version = "~> 5.0"
 
   for_each = {
-    for idx in range(0, length(var.hsm.hsm_count) > 0 && var.hsm.hsm_init ? 1 : 0): "${var.app_name}-${var.app_namespace}-${var.tfenv}-init-sg-${idx}" => idx
+    for idx in range(0, var.hsm.hsm_count > 0 && var.hsm.hsm_init ? 1 : 0) : "${var.app_name}-${var.app_namespace}-${var.tfenv}-init-sg-${idx}" => idx
   }
 
   name        = "${var.app_name}-${var.app_namespace}-${var.tfenv}}-init-instance"
   description = "Security Group for EC2 Instance Egress for HSM Activation EC2 Instance"
 
-  vpc_id = module.vpc.vpc_id
+  vpc_id = var.vpc_id
 
   egress_rules = ["https-443-tcp"]
 
@@ -45,7 +45,7 @@ module "vpc_endpoints" {
   version = "~> 5.0"
 
   for_each = {
-    for idx in range(0, length(var.hsm.hsm_count) > 0 && var.hsm.hsm_init ? 1 : 0): "${var.app_name}-${var.app_namespace}-${var.tfenv}-init-vpce-${idx}" => idx
+    for idx in range(0, var.hsm.hsm_count > 0 && var.hsm.hsm_init ? 1 : 0) : "${var.app_name}-${var.app_namespace}-${var.tfenv}-init-vpce-${idx}" => idx
   }
 
   vpc_id = var.vpc_id
@@ -54,9 +54,9 @@ module "vpc_endpoints" {
     replace(service, ".", "_") =>
     {
       service             = service
-      subnet_ids          = [ local.subnet_ids[0] ]
+      subnet_ids          = [local.subnet_ids[0]]
       private_dns_enabled = true
-      tags                = merge(
+      tags = merge(
         { Name = "${local.name_prefix}-${service}" },
         local.base_tags
       )
@@ -69,7 +69,7 @@ module "vpc_endpoints" {
   security_group_rules = {
     ingress_https = {
       description = "HTTPS from subnets"
-      cidr_blocks = module.vpc.intra_subnets_cidr_blocks
+      cidr_blocks = var.subnet_ids
     }
   }
 

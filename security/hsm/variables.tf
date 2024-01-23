@@ -1,8 +1,9 @@
 ## GLOBAL VAR CONFIGURATION
 variable "aws_region" {
-  type = string
+  type        = string
   description = "AWS Region"
 }
+
 variable "app_name" {
   type        = string
   description = "(Infrastructure) Application Name"

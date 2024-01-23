@@ -48,14 +48,20 @@ The following resources must exist before the deployment can take place:
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_ec2_instance"></a> [ec2\_instance](#module\_ec2\_instance) | terraform-aws-modules/ec2-instance/aws | n/a |
+| <a name="module_security_group_instance"></a> [security\_group\_instance](#module\_security\_group\_instance) | terraform-aws-modules/security-group/aws | ~> 5.0 |
+| <a name="module_vpc_endpoints"></a> [vpc\_endpoints](#module\_vpc\_endpoints) | terraform-aws-modules/vpc/aws//modules/vpc-endpoints | ~> 5.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [aws_cloudhsm_v2_cluster.cloudhsm_v2_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudhsm_v2_cluster) | resource |
+| [aws_cloudhsm_v2_hsm.hsm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudhsm_v2_hsm) | resource |
 | [aws_subnet.cloudhsm_v2_subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
+| [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_subnet.hsm_subnet_selections](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 
@@ -65,8 +71,9 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | (Infrastructure) Application Name | `string` | `"hsm"` | no |
 | <a name="input_app_namespace"></a> [app\_namespace](#input\_app\_namespace) | (Infrastructure) Application Namespace | `string` | n/a | yes |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS Region | `string` | n/a | yes |
 | <a name="input_department"></a> [department](#input\_department) | (Infrastructure) Application Billing Department, aka Cost Center; responsible for this provisioning | `string` | n/a | yes |
-| <a name="input_hsm"></a> [hsm](#input\_hsm) | Config to create rds | <pre>object({<br>    name                 = optional(string)<br>    hsm_type             = optional(string)<br>    subnet_ids           = optional(list(string))<br>    create_custom_subnet = optional(bool)<br>    custom_subnet_cidrs  = optional(list(string))<br>  })</pre> | `null` | no |
+| <a name="input_hsm"></a> [hsm](#input\_hsm) | Config to create hsm | <pre>object({<br>    name                 = optional(string)<br>    hsm_type             = optional(string)<br>    hsm_count            = optional(number)<br>    hsm_init             = optional(bool)<br>    subnet_ids           = optional(list(string))<br>    create_custom_subnet = optional(bool)<br>    custom_subnet_cidrs  = optional(list(string))<br>  })</pre> | `null` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | Subnet IDs to be used for hsm subnet group | `list(string)` | `[]` | no |
 | <a name="input_tfenv"></a> [tfenv](#input\_tfenv) | (Infrastructure) Environment | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID to provision hsm | `string` | n/a | yes |
@@ -75,6 +82,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_hsm"></a> [hsm](#output\_hsm) | n/a |
 | <a name="output_hsm_cluster"></a> [hsm\_cluster](#output\_hsm\_cluster) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
